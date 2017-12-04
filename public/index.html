@@ -8,6 +8,7 @@
 
 <body>
     <img src="/images/snower.png" />
+    <img id="loading-indicator" src="/images/loader.svg" />
     <input id="make-absolute" type="checkbox">Make absolute</input>
     <input id="convert-to-curves" type="checkbox">Convert to Curves</input>
     <div id="path-holder">
@@ -21,13 +22,24 @@
 
     <script>
 
-        var submitButton = document.querySelector('#submit-button');
-        var path = () => document.querySelector("#path").value;
-        var makeAbsolute = () => document.querySelector("#make-absolute").checked;
-        var convertToCurves = () => document.querySelector("#convert-to-curves").checked;
-        var renderPath = (path) => document.querySelector('#rendered-path').setAttribute('d', path);
+        const submitButton = document.querySelector('#submit-button');
+        const path = () => document.querySelector("#path").value;
+        const makeAbsolute = () => document.querySelector("#make-absolute").checked;
+        const convertToCurves = () => document.querySelector("#convert-to-curves").checked;
+        const renderPath = (path) => document.querySelector('#rendered-path').setAttribute('d', path);
+        const loader = {
+            start: () => {
+                document.querySelector("#loading-indicator").style.visibility = 'visible';
+            },
+            stop: () => { 
+                document.querySelector("#loading-indicator").style.visibility = 'hidden'; 
+            }
+        };
+
+        loader.stop();
 
         submitButton.addEventListener('click', () => {
+            loader.start();
             fetch('/normalize', {
                 method: 'POST',
                 headers: {
@@ -36,7 +48,10 @@
                 body: JSON.stringify({ makeAbsolute: makeAbsolute(), convertToCurves: convertToCurves(), path: path() })
             })
                 .then(res => res.json())
-                .then(x => renderPath(x.path));
+                .then(x => {
+                    renderPath(x.path);
+                    loader.stop();
+                });
         });
 
     </script>
