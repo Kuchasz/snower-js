@@ -30,22 +30,3 @@ var app = new Vue({
 
 // loader.stop();
 
-// submitButton.addEventListener("click", () => {
-//   loader.start();
-//   fetch("/normalize", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify({
-//       makeAbsolute: makeAbsolute(),
-//       convertToCurves: convertToCurves(),
-//       path: path()
-//     })
-//   })
-//     .then(res => res.json())
-//     .then(x => {
-//       renderPath(x.path);
-//       loader.stop();
-//     });
-// });
