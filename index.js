@@ -12,6 +12,13 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// makeAbsolute: this.makeAbsolute,
+// makeRelative: this.makeRelative,
+// convertToCurves: this.convertToCurves,
+// expandSmoothCurves: this.expandSmoothCurves,
+// arcsToBeziers: this.arcsToBeziers,
+// path: this.path
+
 app.post("/normalize", (req, res) => {
   res.setHeader("Content-Type", "application/json");
 

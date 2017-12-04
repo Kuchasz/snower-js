@@ -1,8 +1,12 @@
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: resolve("./client/index.js"),
+  entry: [
+    resolve("./client/index.js"),
+    "babel-polyfill"
+  ],
   output: {
     filename: "bundle.js",
     path: resolve("./public")
@@ -22,15 +26,26 @@ module.exports = {
             presets: ["babel-preset-env"]
           }
         }
+      },
+      {
+        test: /\.styl$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: ["css-loader", "stylus-loader"]
+        })
       }
     ]
   },
   resolve: {
-    extensions: [".js"],
+    extensions: [".js", ".styl"],
     alias: {
       vue$: "vue/dist/vue.esm.js"
     }
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: resolve('./index.html') })]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: resolve("./index.html")
+    }),
+    new ExtractTextPlugin('[name].css')
+  ]
 };

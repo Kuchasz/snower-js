@@ -1,4 +1,10 @@
+import "./main.styl";
+import "babel-polyfill";
+
 import Vue from "vue";
+import Vuetify from 'vuetify'
+
+Vue.use(Vuetify)
 
 import HomeComponent from './components/home.vue';
 
