@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Normalize your SVG paths</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <img src="/images/snower.png" />
+    <input id="make-absolute" type="checkbox">Make absolute</input>
+    <input id="convert-to-curves" type="checkbox">Convert to Curves</input>
+    <div id="path-holder">
+        <textarea id="path"></textarea>
+    </div>
+    <button id="submit-button">Normalize!</button>
+
+    <svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path id="rendered-path" />
+    </svg>
+
+    <script>
+
+        var submitButton = document.querySelector('#submit-button');
+        var path = () => document.querySelector("#path").value;
+        var makeAbsolute = () => document.querySelector("#make-absolute").checked;
+        var convertToCurves = () => document.querySelector("#convert-to-curves").checked;
+        var renderPath = (path) => document.querySelector('#rendered-path').setAttribute('d', path);
+
+        submitButton.addEventListener('click', () => {
+            fetch('/normalize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ makeAbsolute: makeAbsolute(), convertToCurves: convertToCurves(), path: path() })
+            })
+                .then(res => res.json())
+                .then(x => renderPath(x.path));
+        });
+
+    </script>
+
+</body>
+
+</html>
